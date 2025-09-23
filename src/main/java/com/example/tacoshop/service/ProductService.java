@@ -9,6 +9,7 @@ import com.example.tacoshop.entity.Product;
 import java.util.List;
 
 public interface ProductService {
+
     AdminProductResponse saveProduct(ProductRequest request);
 
     PageResponse<AdminProductResponse> findAllWithDeactivate(Integer page, Integer size);

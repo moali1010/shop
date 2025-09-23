@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 @Service
 @RequiredArgsConstructor
 public class DiscountCodeServiceImpl implements DiscountCodeService {
+
     private final DiscountStrategyFactory discountStrategyFactory;
     private final DiscountCodeRepository discountCodeRepository;
     private final Logger logger = LoggerFactory.getLogger(DiscountCodeServiceImpl.class);
@@ -42,4 +43,5 @@ public class DiscountCodeServiceImpl implements DiscountCodeService {
                 discountAmount, order.getId(), order.getDiscountCode());
         return discountAmount;
     }
+
 }

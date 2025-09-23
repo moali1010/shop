@@ -8,6 +8,7 @@ import com.example.tacoshop.entity.type.PaymentMethod;
 import java.math.BigDecimal;
 
 public interface PaymentService {
+
     PaymentTransaction initiateOrderPayment(User user, OrderEntity order, PaymentMethod method, BigDecimal amount);
 
     void confirmOrderPayment(Long transactionId, boolean success);

@@ -7,6 +7,7 @@ import com.example.tacoshop.dto.response.UserResponse;
 import com.example.tacoshop.entity.User;
 
 public interface UserService {
+
     UserResponse registerUser(UserRegistrationRequest request);
 
     AuthResponse loginUser(UserLoginRequest request);

@@ -18,6 +18,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class BaseModel<ID extends Serializable> implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private ID id;
@@ -44,4 +45,5 @@ public abstract class BaseModel<ID extends Serializable> implements Serializable
     public void preUpdate() {
         updatedAt = OffsetDateTime.now();
     }
+
 }

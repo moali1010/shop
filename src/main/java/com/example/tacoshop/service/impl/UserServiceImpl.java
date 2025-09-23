@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
@@ -66,4 +67,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username).orElseThrow(() ->
                 new BusinessException("USER_NOT_FOUND", "User not found"));
     }
+
 }

@@ -6,9 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PercentageMaxDiscountStrategy implements DiscountStrategy {
+
     @Override
     public long applyDiscount(OrderEntity order, DiscountCode code) {
         long discount = order.getTotalAmount() * code.getValue() / 100;
         return Math.min(discount, code.getMaxAmount());
     }
+
 }

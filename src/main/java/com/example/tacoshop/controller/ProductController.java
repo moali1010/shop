@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
+
     private final ProductService productService;
 
     @GetMapping
@@ -23,4 +24,5 @@ public class ProductController {
     public ResponseEntity<CustomerProductResponse> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
+
 }

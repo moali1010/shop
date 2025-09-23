@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends BaseRepository<OrderEntity, Long> {
+
     Page<OrderEntity> findByCustomerId(Long customerId, Pageable pageable);
 
     List<OrderEntity> findByStatus(OrderStatus status);

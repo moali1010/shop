@@ -21,6 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseModel<Long> implements UserDetails {
+
     @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
@@ -38,4 +39,5 @@ public class User extends BaseModel<Long> implements UserDetails {
     public boolean isEnabled() {
         return getActive();
     }
+
 }

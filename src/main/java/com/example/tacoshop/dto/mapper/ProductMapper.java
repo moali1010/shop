@@ -5,6 +5,7 @@ import com.example.tacoshop.dto.response.CustomerProductResponse;
 import com.example.tacoshop.entity.Product;
 
 public class ProductMapper {
+
     public static CustomerProductResponse toCustomerProductResponse(Product product) {
         return new CustomerProductResponse(
                 product.getId(),
@@ -22,4 +23,5 @@ public class ProductMapper {
                 product.getActive()
         );
     }
+
 }

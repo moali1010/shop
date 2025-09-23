@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Credit extends BaseModel<Long> {
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

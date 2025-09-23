@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final UserService userService;
 
     @PostMapping("/register")
@@ -33,4 +34,5 @@ public class AuthController {
         AuthResponse response = userService.loginUser(request);
         return ResponseEntity.ok(response);
     }
+
 }

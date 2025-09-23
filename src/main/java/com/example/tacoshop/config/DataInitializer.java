@@ -18,6 +18,7 @@ import java.time.OffsetDateTime;
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
+
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -25,6 +26,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
         if (productRepository.count() == 0) {
             Product taco1 = Product.builder()
                     .name("Classic Beef Taco")
@@ -57,6 +59,7 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             productRepository.save(taco5);
         }
+
         userRepository.findByUsername("admin").ifPresentOrElse((u) -> {
         }, () -> {
             User admin = User.builder()
@@ -66,6 +69,7 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             userRepository.save(admin);
         });
+
         if (discountCodeRepository.count() == 0) {
             DiscountCode dc1 = DiscountCode.builder()
                     .code("AXFMO")
@@ -76,4 +80,5 @@ public class DataInitializer implements CommandLineRunner {
             discountCodeRepository.save(dc1);
         }
     }
+
 }

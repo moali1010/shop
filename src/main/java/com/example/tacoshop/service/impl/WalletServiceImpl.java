@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class WalletServiceImpl implements WalletService {
+
     private final WalletRepository walletRepository;
     private final WalletTransactionRepository transactionRepository;
 
@@ -41,4 +42,5 @@ public class WalletServiceImpl implements WalletService {
     public BigDecimal getBalance(User user) {
         return null;
     }
+
 }

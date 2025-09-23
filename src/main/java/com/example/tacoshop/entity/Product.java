@@ -17,6 +17,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product extends BaseModel<Long> {
+
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Component
 @RequiredArgsConstructor
 public class WalletPaymentProcessor implements PaymentProcessor {
+
     private final WalletService walletService;
 
     @Override
@@ -26,4 +27,5 @@ public class WalletPaymentProcessor implements PaymentProcessor {
     public boolean canProcess(String paymentMethod) {
         return "WALLET".equals(paymentMethod);
     }
+
 }

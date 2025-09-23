@@ -3,6 +3,7 @@ package com.example.tacoshop.exception;
 import java.math.BigDecimal;
 
 public class InsufficientFundsException extends BusinessException {
+
     public InsufficientFundsException(String message) {
         super("INSUFFICIENT_FUNDS", message);
     }
@@ -12,6 +13,7 @@ public class InsufficientFundsException extends BusinessException {
                 String.format("Insufficient %s balance. Available: %s, Required: %s",
                         accountType, available, required));
     }
+
 }
 
 

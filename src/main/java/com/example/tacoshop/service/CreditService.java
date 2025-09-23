@@ -6,6 +6,7 @@ import com.example.tacoshop.entity.User;
 import java.math.BigDecimal;
 
 public interface CreditService {
+
     Credit createCreditForUser(User user);
 
     void useCredit(User user, BigDecimal amount);

@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Wallet extends BaseModel<Long> {
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

@@ -1,0 +1,371 @@
+{
+  "info": {
+    "_postman_id": "f4c43424-973f-4b4f-972a-d4056a119ae0",
+    "name": "shop",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "_exporter_id": "48533449",
+    "_collection_link": "https://moali-saraco-1254629.postman.co/workspace/saraco's-Workspace~98e01ab0-7ade-4604-81fb-a7f1683e62b9/collection/48533449-f4c43424-973f-4b4f-972a-d4056a119ae0?action=share&source=collection_link&creator=48533449"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://127.0.0.1:8080/api/auth/login"
+          },
+          "response": []
+        },
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"test2\",\r\n    \"password\": \"test2222\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://127.0.0.1:8080/api/auth/register"
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Test for login endpoint",
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has token and user object\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property(\"token\");",
+              "    pm.expect(jsonData).to.have.property(\"user\");",
+              "    pm.expect(jsonData.user).to.have.property(\"id\");",
+              "    pm.expect(jsonData.user).to.have.property(\"username\");",
+              "    pm.expect(jsonData.user).to.have.property(\"role\");",
+              "});",
+              "",
+              "pm.test(\"Token is a non-empty string\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.token).to.be.a(\"string\").and.not.empty;",
+              "});",
+              "",
+              "pm.test(\"User object has correct schema\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.user).to.be.an(\"object\");",
+              "    pm.expect(jsonData.user.id).to.be.a(\"number\");",
+              "    pm.expect(jsonData.user.username).to.be.a(\"string\");",
+              "    pm.expect(jsonData.user.role).to.be.a(\"string\");",
+              "});",
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "add product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzU4NTMzNDA0LCJleHAiOjE3NTg1MzcwMDR9.JSE6tEs8U8zDwSHx9Ok_P7TCUWeal5jq9ztDQupqFV0"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Cheese\",\r\n    \"price\": 20000,\r\n    \"stock\": 300,\r\n    \"isActive\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://127.0.0.1:8080/api/admin/products"
+          },
+          "response": []
+        },
+        {
+          "name": "products",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzU4NTMzNDA0LCJleHAiOjE3NTg1MzcwMDR9.JSE6tEs8U8zDwSHx9Ok_P7TCUWeal5jq9ztDQupqFV0"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8080/api/admin/products?page=0&size=2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "admin",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "edit product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzU4NTMzNDA0LCJleHAiOjE3NTg1MzcwMDR9.JSE6tEs8U8zDwSHx9Ok_P7TCUWeal5jq9ztDQupqFV0"
+              }
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"CheeseEdit\",\r\n    \"price\": 260000,\r\n    \"stock\": 30,\r\n    \"isActive\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://127.0.0.1:8080/api/admin/products/6"
+          },
+          "response": []
+        },
+        {
+          "name": "delete product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzU4NTMzNDA0LCJleHAiOjE3NTg1MzcwMDR9.JSE6tEs8U8zDwSHx9Ok_P7TCUWeal5jq9ztDQupqFV0"
+              }
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": "http://127.0.0.1:8080/api/admin/products/6"
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Tests for admin endpoints (e.g., create product)",
+              "pm.test(\"Status code is 200 or 201\", function () {",
+              "    pm.expect([200, 201]).to.include(pm.response.code);",
+              "});",
+              "",
+              "pm.test(\"Response is JSON and has expected product properties\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an(\"object\");",
+              "    pm.expect(jsonData).to.have.property(\"id\");",
+              "    pm.expect(jsonData).to.have.property(\"name\");",
+              "    pm.expect(jsonData).to.have.property(\"price\");",
+              "    pm.expect(jsonData).to.have.property(\"stock\");",
+              "    pm.expect(jsonData).to.have.property(\"isActive\");",
+              "});",
+              "",
+              "pm.test(\"Product property types are correct\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.id).to.be.a(\"number\");",
+              "    pm.expect(jsonData.name).to.be.a(\"string\");",
+              "    pm.expect(jsonData.price).to.be.a(\"number\");",
+              "    pm.expect(jsonData.stock).to.be.a(\"number\");",
+              "    pm.expect(jsonData.isActive).to.be.a(\"boolean\");",
+              "});",
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "order",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsInJvbGUiOiJST0xFX0NVU1RPTUVSIiwiaWF0IjoxNzU4NTQwNjMzLCJleHAiOjE3NTg1NDQyMzN9.SFGFKQXSit91lCTY4C5_idGex2OGXow1aPPHr3sjYRc"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"items\": [\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 20\r\n        },\r\n        {\r\n            \"productId\": 3,\r\n            \"quantity\": 10,\r\n            \"customData\":\"POr souce baShe\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://127.0.0.1:8080/api/user/orders"
+          },
+          "response": []
+        },
+        {
+          "name": "get orders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsInJvbGUiOiJST0xFX0NVU1RPTUVSIiwiaWF0IjoxNzU4NTQwNjMzLCJleHAiOjE3NTg1NDQyMzN9.SFGFKQXSit91lCTY4C5_idGex2OGXow1aPPHr3sjYRc"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8080/api/user/orders?page=0&size=2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "user",
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Tests for order endpoints (generic)",
+              "pm.test(\"Status code is 200 or 201\", function () {",
+              "    pm.expect([200, 201]).to.include(pm.response.code);",
+              "});",
+              "",
+              "pm.test(\"Response is JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "// Add more specific schema checks here if you have example responses or schemas for order endpoints.",
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "product",
+      "item": [
+        {
+          "name": "products",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8080/api/products?page=0&size=2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://127.0.0.1:8080/api/products/3"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

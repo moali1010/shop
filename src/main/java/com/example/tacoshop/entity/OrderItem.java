@@ -15,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItem extends BaseModel<Long> {
+
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;

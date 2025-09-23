@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentTransaction extends BaseModel<Long> {
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends BaseRepository<PaymentTransaction, Long> {
+
     List<PaymentTransaction> findByOrderId(Long orderId);
 
     Optional<PaymentTransaction> findByOrderIdAndStatus(Long orderId, PaymentStatus status);

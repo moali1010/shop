@@ -9,6 +9,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class PaymentProcessorFactory {
+
     private final List<PaymentProcessor> processors;
 
     public PaymentProcessor getProcessor(String paymentMethod) {
@@ -18,4 +19,5 @@ public class PaymentProcessorFactory {
                 .orElseThrow(() ->
                         new BusinessException("UNSUPPORTED_METHOD", "Unsupported payment method: " + paymentMethod));
     }
+
 }

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Component
 @RequiredArgsConstructor
 public class CreditPaymentProcessor implements PaymentProcessor {
+
     private final CreditService creditService;
 
     @Override
@@ -26,4 +27,5 @@ public class CreditPaymentProcessor implements PaymentProcessor {
     public boolean canProcess(String paymentMethod) {
         return "CREDIT".equals(paymentMethod);
     }
+
 }

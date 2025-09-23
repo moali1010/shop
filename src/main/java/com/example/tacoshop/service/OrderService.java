@@ -8,6 +8,7 @@ import com.example.tacoshop.entity.User;
 import com.example.tacoshop.entity.type.OrderStatus;
 
 public interface OrderService {
+
     Long createOrder(User user, CreateOrderRequest request);
 
     void cancelOrder(OrderEntity order, String reason);

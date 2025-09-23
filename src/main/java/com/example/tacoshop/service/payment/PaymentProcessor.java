@@ -5,6 +5,7 @@ import com.example.tacoshop.entity.User;
 import java.math.BigDecimal;
 
 public interface PaymentProcessor {
+
     void processPayment(User user, BigDecimal amount, String description);
 
     void processRefund(User user, BigDecimal amount, String description);

@@ -21,6 +21,7 @@ import java.util.Map;
 @RequestMapping("/api/user/payments")
 @RequiredArgsConstructor
 public class PaymentController {
+
     private final PaymentService paymentService;
     private final OrderService orderService;
 
@@ -53,4 +54,5 @@ public class PaymentController {
                             "error", "An unexpected error occurred"));
         }
     }
+
 }

@@ -16,6 +16,7 @@ import static com.example.tacoshop.config.ApplicationConstants.DEFAULT_CREDIT_LI
 @Service
 @RequiredArgsConstructor
 public class CreditServiceImpl implements CreditService {
+
     private final CreditRepository creditRepository;
 
     @Override
@@ -71,4 +72,5 @@ public class CreditServiceImpl implements CreditService {
         }
         return credit.getLimit().subtract(credit.getUsed());
     }
+
 }

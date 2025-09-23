@@ -18,6 +18,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiscountCode extends BaseModel<Long> {
+
     @Column(unique = true, nullable = false)
     private String code;
     @Enumerated(EnumType.STRING)

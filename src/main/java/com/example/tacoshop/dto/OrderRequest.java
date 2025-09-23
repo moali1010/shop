@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class OrderRequest {
+
     @NotNull(message = "Total amount is required")
     @PositiveOrZero(message = "Total amount must be positive or zero")
     private Long totalAmount;
@@ -22,6 +23,7 @@ public class OrderRequest {
 
     @Data
     public static class OrderItemRequest {
+
         @NotNull(message = "Product ID is required")
         private Long productId;
         @NotNull(message = "Quantity is required")
@@ -29,4 +31,5 @@ public class OrderRequest {
         private Integer quantity;
         private String customData;
     }
+
 }

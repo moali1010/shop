@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FixedAmountDiscountStrategy implements DiscountStrategy {
+
     @Override
     public long applyDiscount(OrderEntity order, DiscountCode code) {
         if (code.getValue() > order.getTotalAmount()) {
@@ -13,4 +14,5 @@ public class FixedAmountDiscountStrategy implements DiscountStrategy {
         }
         return code.getValue();
     }
+
 }

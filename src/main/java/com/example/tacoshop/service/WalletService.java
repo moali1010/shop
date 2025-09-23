@@ -6,6 +6,7 @@ import com.example.tacoshop.entity.Wallet;
 import java.math.BigDecimal;
 
 public interface WalletService {
+
     Wallet createWalletForUser(User user);
 
     void creditWallet(User user, BigDecimal amount, String description);

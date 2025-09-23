@@ -17,6 +17,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -89,9 +90,11 @@ public class GlobalExceptionHandler {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ErrorResponse {
+
         private String errorCode;
         private String message;
         private Map<String, String> details;
         private LocalDateTime timestamp;
     }
+
 }

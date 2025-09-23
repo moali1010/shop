@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DiscountStrategyFactory {
+
     private final PercentageDiscountStrategy percentage;
     private final PercentageMaxDiscountStrategy percentageMax;
     private final FixedAmountDiscountStrategy fixed;
@@ -18,4 +19,5 @@ public class DiscountStrategyFactory {
             case FIXED_AMOUNT -> fixed;
         };
     }
+
 }

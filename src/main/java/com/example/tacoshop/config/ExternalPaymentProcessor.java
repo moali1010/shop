@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 @Component
 public class ExternalPaymentProcessor implements PaymentProcessor {
+
     @Override
     public void processPayment(User user, BigDecimal amount, String description) {
         throw new UnsupportedOperationException("External payment not implemented yet");
@@ -22,4 +23,5 @@ public class ExternalPaymentProcessor implements PaymentProcessor {
     public boolean canProcess(String paymentMethod) {
         return "ZARINPAL".equals(paymentMethod) || "ASANPARDAKHT".equals(paymentMethod);
     }
+
 }

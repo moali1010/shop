@@ -12,6 +12,7 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
+
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.expirationMs}")
@@ -49,4 +50,5 @@ public class JwtUtil {
         return (String) Jwts.parser().setSigningKey(getSigningKey()).build()
                 .parseClaimsJws(token).getBody().get("role");
     }
+
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class AuditConfig {
+
     @Bean
     public AuditorAware<User> auditorAware() {
         return () -> {
@@ -27,4 +28,5 @@ public class AuditConfig {
             return Optional.empty();
         };
     }
+
 }

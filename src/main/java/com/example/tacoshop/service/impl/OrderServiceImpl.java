@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+
     private final OrderRepository orderRepository;
     private final ProductService productService;
     private final OrderItemRepository orderItemRepository;
@@ -178,4 +179,5 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalAmount(totalAmount);
         return orderItemList;
     }
+
 }
