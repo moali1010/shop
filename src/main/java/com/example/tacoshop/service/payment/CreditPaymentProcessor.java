@@ -15,7 +15,7 @@ public class CreditPaymentProcessor implements PaymentProcessor {
 
     @Override
     public void processPayment(User user, BigDecimal amount, String description) {
-        creditService.useCredit(user, amount);
+        creditService.debitCredit(user, amount);
     }
 
     @Override

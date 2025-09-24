@@ -9,8 +9,9 @@ public class FixedAmountDiscountStrategy implements DiscountStrategy {
 
     @Override
     public long applyDiscount(OrderEntity order, DiscountCode code) {
-        if (code.getValue() > order.getTotalAmount()) {
-            return order.getTotalAmount();
+        long total = order.getTotalAmount().longValue();
+        if (code.getValue() > total) {
+            return total;
         }
         return code.getValue();
     }

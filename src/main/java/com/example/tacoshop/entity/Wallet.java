@@ -22,8 +22,10 @@ public class Wallet extends BaseModel<Long> {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     @Column(nullable = false)
     private BigDecimal balance = BigDecimal.ZERO;
+
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
     private List<WalletTransaction> transactions;
 }

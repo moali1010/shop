@@ -21,8 +21,10 @@ public class Credit extends BaseModel<Long> {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     @Column(nullable = false, name = "credit_max_limit")
     private BigDecimal limit = BigDecimal.ZERO;
+
     @Column(nullable = false)
     private BigDecimal used = BigDecimal.ZERO;
 }

@@ -21,9 +21,12 @@ public class DiscountCode extends BaseModel<Long> {
 
     @Column(unique = true, nullable = false)
     private String code;
+
     @Enumerated(EnumType.STRING)
     private DiscountType type;
+
     private long value;
     private long maxAmount;
     private OffsetDateTime expiresAt;
+
 }

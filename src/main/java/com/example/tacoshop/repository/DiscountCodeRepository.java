@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface DiscountCodeRepository extends BaseRepository<DiscountCode, Long> {
 
     Optional<DiscountCode> findByCodeAndActiveIsTrueAndExpiresAtAfter(String code, OffsetDateTime expiresAt);
+
+    Optional<DiscountCode> findByCodeAndActiveIsTrue(String code);
 }

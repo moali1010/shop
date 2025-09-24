@@ -20,19 +20,26 @@ import java.time.OffsetDateTime;
 public abstract class BaseModel<ID extends Serializable> implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     private ID id;
+
+    @Version
+    private Long version;
+
     @Builder.Default
     private Boolean active = Boolean.TRUE;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_id")
+    @JoinColumn(name = "created_by")
     private User createdBy;
+
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_by_id")
+    @JoinColumn(name = "updated_by")
     private User updatedBy;
 
     @PrePersist

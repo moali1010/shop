@@ -2,6 +2,7 @@ package com.example.tacoshop.service.impl;
 
 import com.example.tacoshop.entity.Credit;
 import com.example.tacoshop.entity.User;
+import com.example.tacoshop.exception.BusinessException;
 import com.example.tacoshop.exception.ResourceNotFoundException;
 import com.example.tacoshop.repository.CreditRepository;
 import com.example.tacoshop.service.CreditService;
@@ -31,16 +32,16 @@ public class CreditServiceImpl implements CreditService {
 
     @Override
     @Transactional
-    public void useCredit(User user, BigDecimal amount) {
+    public void debitCredit(User user, BigDecimal amount) {
         Credit credit = creditRepository.findByUserId(user.getId()).orElseThrow(() ->
-                new ResourceNotFoundException("CREDIt", "user-id", user.getId())
+                new ResourceNotFoundException("CREDIT", "user-id", user.getId())
         );
-        if (credit == null) {
-            throw new RuntimeException("Credit account not found for user");
-        }
         BigDecimal available = credit.getLimit().subtract(credit.getUsed());
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessException("INVALID_AMOUNT", "Amount must be positive");
+        }
         if (amount.compareTo(available) > 0) {
-            throw new RuntimeException("Insufficient credit");
+            throw new BusinessException("INSUFFICIENT_CREDIT", String.format("Insufficient credit. Available: %s, Requested: %s", available, amount));
         }
         credit.setUsed(credit.getUsed().add(amount));
         creditRepository.save(credit);
@@ -50,10 +51,10 @@ public class CreditServiceImpl implements CreditService {
     @Transactional
     public void repayCredit(User user, BigDecimal amount) {
         Credit credit = creditRepository.findByUserId(user.getId()).orElseThrow(() ->
-                new ResourceNotFoundException("CREDIt", "user-id", user.getId())
+                new ResourceNotFoundException("CREDIT", "user-id", user.getId())
         );
-        if (credit == null) {
-            throw new RuntimeException("Credit account not found for user");
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessException("INVALID_AMOUNT", "Amount must be positive");
         }
         credit.setUsed(credit.getUsed().subtract(amount));
         if (credit.getUsed().compareTo(BigDecimal.ZERO) < 0) {
@@ -65,11 +66,8 @@ public class CreditServiceImpl implements CreditService {
     @Override
     public BigDecimal getAvailableCredit(User user) {
         Credit credit = creditRepository.findByUserId(user.getId()).orElseThrow(() ->
-                new ResourceNotFoundException("CREDIt", "user-id", user.getId())
+                new ResourceNotFoundException("CREDIT", "user-id", user.getId())
         );
-        if (credit == null) {
-            return BigDecimal.ZERO;
-        }
         return credit.getLimit().subtract(credit.getUsed());
     }
 

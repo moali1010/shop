@@ -20,4 +20,9 @@ public interface OrderService {
     PageResponse<OrderResponse> findByCustomerId(Long customerId, Integer page, Integer size);
 
     void updateOrderStatus(OrderEntity order, OrderStatus status);
+
+    PageResponse<OrderResponse> findAllOrders(Integer page, Integer size);
+
+    OrderResponse updateOrder(Long id, CreateOrderRequest request, User user);
+
 }

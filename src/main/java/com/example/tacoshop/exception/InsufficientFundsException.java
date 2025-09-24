@@ -15,5 +15,3 @@ public class InsufficientFundsException extends BusinessException {
     }
 
 }
-
-

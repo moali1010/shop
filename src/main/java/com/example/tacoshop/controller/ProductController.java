@@ -15,13 +15,12 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<PageResponse<CustomerProductResponse>> getAllProducts(@RequestParam Integer page,
-                                                                                @RequestParam Integer size) {
+    public ResponseEntity<PageResponse<CustomerProductResponse>> findAllProducts(@RequestParam Integer page, @RequestParam Integer size) {
         return ResponseEntity.ok(productService.findAll(page, size));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerProductResponse> getProduct(@PathVariable Long id) {
+    public ResponseEntity<CustomerProductResponse> findProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
 

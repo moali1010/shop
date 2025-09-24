@@ -16,4 +16,10 @@ public interface PaymentService {
     void refundPayment(PaymentTransaction transaction, String reason);
 
     void refundPaymentsForOrder(OrderEntity order, String reason);
+
+    boolean hasSuccessfulPayment(Long orderId);
+
+    void initiateWalletCharge(User user, BigDecimal amount, PaymentMethod method);
+
+    void repayCredit(User user, BigDecimal amount, PaymentMethod method);
 }

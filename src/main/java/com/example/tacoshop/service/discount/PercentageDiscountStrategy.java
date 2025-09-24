@@ -9,7 +9,7 @@ public class PercentageDiscountStrategy implements DiscountStrategy {
 
     @Override
     public long applyDiscount(OrderEntity order, DiscountCode code) {
-        return order.getTotalAmount() * code.getValue() / 100;
+        return order.getTotalAmount().longValue() * code.getValue() / 100;
     }
 
 }

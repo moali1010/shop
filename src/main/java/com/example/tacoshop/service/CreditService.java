@@ -9,7 +9,7 @@ public interface CreditService {
 
     Credit createCreditForUser(User user);
 
-    void useCredit(User user, BigDecimal amount);
+    void debitCredit(User user, BigDecimal amount);
 
     void repayCredit(User user, BigDecimal amount);
 

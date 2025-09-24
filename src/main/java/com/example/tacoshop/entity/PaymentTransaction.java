@@ -13,7 +13,10 @@ import lombok.experimental.SuperBuilder;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "payments")
+@Table(name = "payments", indexes = {
+        @Index(name = "idx_payments_order", columnList = "order_id"),
+        @Index(name = "idx_payments_user", columnList = "user_id")
+})
 @SuperBuilder
 @Getter
 @Setter
@@ -21,18 +24,26 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PaymentTransaction extends BaseModel<Long> {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
+
     private BigDecimal amount;
+
     @Enumerated(EnumType.STRING)
     private PaymentPurpose purpose;
+
     @Enumerated(EnumType.STRING)
     private PaymentMethod method;
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+
+    @Column(name = "provider_ref", nullable = false, unique = true)
     private String providerRef;
+
 }

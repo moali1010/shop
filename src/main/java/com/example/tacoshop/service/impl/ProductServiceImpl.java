@@ -9,11 +9,11 @@ import com.example.tacoshop.entity.Product;
 import com.example.tacoshop.exception.ResourceNotFoundException;
 import com.example.tacoshop.repository.ProductRepository;
 import com.example.tacoshop.service.ProductService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deactivateProduct(Long id) {
         Product product = productRepository.findByIdAndActiveIsTrue(id).orElseThrow(
                 () -> new ResourceNotFoundException("Product", "id", id)
         );

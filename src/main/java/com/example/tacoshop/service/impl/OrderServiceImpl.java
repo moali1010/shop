@@ -29,8 +29,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -54,14 +54,15 @@ public class OrderServiceImpl implements OrderService {
                 .status(OrderStatus.PENDING_PAYMENT)
                 .expiresAt(OffsetDateTime.now().plus(ApplicationConstants.ORDER_EXPIRY_DURATION))
                 .build();
-        List<OrderItem> orderItems = generateOrderItem(request, order);
+        List<OrderItem> orderItems = createAndValidateOrderItems(request, order);
         order.setItems(orderItems);
+        order.setTotalAmount(calculateTotalAmount(orderItems));
         if (request.discountCode() != null && !request.discountCode().isBlank()) {
             order.setDiscountCode(request.discountCode());
             long discountAmount = discountCodeService.calculateDiscountCode(order);
-            order.setDiscountAmount(discountAmount);
+            order.setDiscountAmount(BigDecimal.valueOf(discountAmount));
         } else {
-            order.setDiscountAmount(0L);
+            order.setDiscountAmount(BigDecimal.ZERO);
         }
         OrderEntity savedOrder = orderRepository.save(order);
         orderItemRepository.saveAll(orderItems);
@@ -147,37 +148,71 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
-    private List<OrderItem> generateOrderItem(CreateOrderRequest request, OrderEntity order) {
+    private List<OrderItem> createAndValidateOrderItems(CreateOrderRequest request, OrderEntity order) {
         List<Long> productIds = request.items().stream()
                 .map(OrderItemRequest::productId)
                 .toList();
         Map<Long, Product> productMap = productService.findAllByIdIn(productIds)
                 .stream()
                 .collect(Collectors.toMap(Product::getId, p -> p));
-        List<OrderItem> orderItemList = new LinkedList<>();
-        Long totalAmount = 0L;
-        for (OrderItemRequest item : request.items()) {
-            Product product = productMap.get(item.productId());
-            if (product == null) {
-                throw new ResourceNotFoundException("Product", "id", item.productId());
-            }
-            if (product.getStock() < item.quantity()) {
-                throw new BusinessException("INSUFFICIENT_STOCK",
-                        String.format("Insufficient stock for product %s. Available: %d, Requested: %d",
-                                product.getName(), product.getStock(), item.quantity()));
-            }
-            OrderItem orderItem = OrderItem.builder()
-                    .order(order)
-                    .product(product)
-                    .quantity(item.quantity())
-                    .priceAtOrder(product.getPrice())
-                    .customData(item.customData())
-                    .build();
-            orderItemList.add(orderItem);
-            totalAmount += product.getPrice() * item.quantity();
-        }
-        order.setTotalAmount(totalAmount);
+        List<OrderItem> orderItemList = request.items().stream()
+                .map(item -> {
+                    Product product = productMap.get(item.productId());
+                    if (product == null) {
+                        throw new ResourceNotFoundException("Product", "id", item.productId());
+                    }
+                    if (product.getStock() < item.quantity()) {
+                        throw new BusinessException("INSUFFICIENT_STOCK",
+                                String.format("Insufficient stock for product %s. Available: %d, Requested: %d",
+                                        product.getName(), product.getStock(), item.quantity()));
+                    }
+                    return OrderItem.builder()
+                            .order(order)
+                            .product(product)
+                            .quantity(item.quantity())
+                            .priceAtOrder(product.getPrice())
+                            .customData(item.customData())
+                            .build();
+                }).collect(Collectors.toList());
         return orderItemList;
+    }
+
+    private BigDecimal calculateTotalAmount(List<OrderItem> items) {
+        return items.stream()
+                .map(item -> item.getPriceAtOrder().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public PageResponse<OrderResponse> findAllOrders(Integer page, Integer size) {
+        Page<OrderEntity> orderPage = orderRepository.findAll(PageRequest.of(page, size));
+        List<OrderResponse> orderResponses = orderPage.getContent().stream()
+                .map(this::mapToOrderResponse)
+                .toList();
+        return new PageResponse<>(orderResponses, orderPage.getTotalElements());
+    }
+
+    @Override
+    @Transactional
+    public OrderResponse updateOrder(Long id, CreateOrderRequest request, User user) {
+        OrderEntity order = findOrderById(id);
+        if (!order.getCustomer().getId().equals(user.getId())) {
+            throw new BusinessException("FORBIDDEN", "You can only update your own orders");
+        }
+        if (order.getStatus() != OrderStatus.PENDING_PAYMENT) {
+            throw new BusinessException("INVALID_ORDER_STATE", "Can only update pending orders");
+        }
+
+        orderItemRepository.deleteAll(order.getItems());
+        List<OrderItem> newItems = createAndValidateOrderItems(request, order);
+        order.setItems(newItems);
+        order.setTotalAmount(calculateTotalAmount(newItems));
+        order.setDiscountCode(request.discountCode());
+        order.setDiscountAmount(BigDecimal.valueOf(discountCodeService.calculateDiscountCode(order)));
+        order.setExpiresAt(OffsetDateTime.now().plus(ApplicationConstants.ORDER_EXPIRY_DURATION));
+        orderRepository.save(order);
+        orderItemRepository.saveAll(newItems);
+        return mapToOrderResponse(order);
     }
 
 }

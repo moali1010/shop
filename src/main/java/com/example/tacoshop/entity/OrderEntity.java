@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -20,16 +21,23 @@ public class OrderEntity extends BaseModel<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> items;
+
     @Column(nullable = false)
-    private Long totalAmount;
+    private BigDecimal totalAmount;
+
     @Column(nullable = false)
     @Builder.Default
-    private Long discountAmount = 0L;
+    private BigDecimal discountAmount = BigDecimal.ZERO;
+
     private String discountCode;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
+
     private OffsetDateTime expiresAt;
+
 }

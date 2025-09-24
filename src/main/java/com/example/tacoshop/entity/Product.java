@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "products")
 @SuperBuilder
@@ -20,8 +22,10 @@ public class Product extends BaseModel<Long> {
 
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
-    private Long price;
+    private BigDecimal price;
+
     @Column(nullable = false)
     private Integer stock;
 }
