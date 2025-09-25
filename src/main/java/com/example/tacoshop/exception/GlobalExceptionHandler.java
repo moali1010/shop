@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import jakarta.validation.ConstraintViolationException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -30,6 +31,16 @@ public class GlobalExceptionHandler {
                 .errorCode("VALIDATION_ERROR")
                 .message("Validation failed")
                 .details(errors)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorCode("VALIDATION_ERROR")
+                .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity.badRequest().body(errorResponse);

@@ -27,6 +27,8 @@ public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final DiscountCodeRepository discountCodeRepository;
     private final JdbcTemplate jdbcTemplate;
+    private final com.example.tacoshop.service.WalletService walletService;
+    private final com.example.tacoshop.service.CreditService creditService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -80,6 +82,8 @@ public class DataInitializer implements CommandLineRunner {
                     .role(UserRole.ROLE_ADMIN)
                     .build();
             userRepository.save(admin);
+            walletService.createWalletForUser(admin);
+            creditService.createCreditForUser(admin);
 
             User seller = User.builder()
                     .username("seller")
@@ -87,6 +91,8 @@ public class DataInitializer implements CommandLineRunner {
                     .role(UserRole.ROLE_CUSTOMER)
                     .build();
             userRepository.save(seller);
+            walletService.createWalletForUser(seller);
+            creditService.createCreditForUser(seller);
         }
 
         if (discountCodeRepository.count() == 0) {
