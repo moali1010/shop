@@ -105,15 +105,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageResponse<UserResponse> findAllUsers(Integer page, Integer size) {
-        Page<User> userPage = userRepository.findAllByActiveIsTrue(PageRequest.of(page, size));
-        List<UserResponse> responses = userPage.getContent().stream()
-                .map(UserMapper::toUserResponse)
-                .toList();
-        return new PageResponse<>(responses, userPage.getTotalElements());
-    }
-
-    @Override
     @Transactional(readOnly = true)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PageResponse<UserResponse> findAllCustomers(Integer page, Integer size) {
