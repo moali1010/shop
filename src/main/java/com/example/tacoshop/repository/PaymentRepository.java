@@ -14,4 +14,5 @@ public interface PaymentRepository extends BaseRepository<PaymentTransaction, Lo
     List<PaymentTransaction> findByOrderId(Long orderId);
 
     Optional<PaymentTransaction> findByOrderIdAndStatus(Long orderId, PaymentStatus status);
+
 }

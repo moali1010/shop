@@ -14,4 +14,5 @@ public interface WalletService {
     void debitWallet(User user, BigDecimal amount, String description);
 
     BigDecimal getBalance(User user);
+
 }

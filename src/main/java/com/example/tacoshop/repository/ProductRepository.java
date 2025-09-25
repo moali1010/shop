@@ -10,4 +10,5 @@ import java.util.List;
 public interface ProductRepository extends BaseRepository<Product, Long> {
 
     List<Product> findAllByIdInAndActiveIsTrue(List<Long> ids);
+
 }

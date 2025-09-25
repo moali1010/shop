@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface CreditRepository extends BaseRepository<Credit, Long> {
 
     Optional<Credit> findByUserId(Long id);
+
 }

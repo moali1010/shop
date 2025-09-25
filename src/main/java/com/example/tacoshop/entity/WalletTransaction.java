@@ -24,8 +24,7 @@ public class WalletTransaction extends BaseModel<Long> {
     @ManyToOne
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
-
     private BigDecimal amount;
-
     private String description;
+
 }

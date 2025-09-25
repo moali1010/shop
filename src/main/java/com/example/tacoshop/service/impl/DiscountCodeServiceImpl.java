@@ -67,7 +67,6 @@ public class DiscountCodeServiceImpl implements DiscountCodeService {
                 .maxAmount(request.maxAmount())
                 .expiresAt(request.expiresAt())
                 .build();
-
         DiscountCode savedDiscount = discountCodeRepository.save(discountCode);
         return mapToDiscountResponse(savedDiscount);
     }
@@ -77,11 +76,9 @@ public class DiscountCodeServiceImpl implements DiscountCodeService {
     public PageResponse<DiscountResponse> findAllDiscounts(Integer page, Integer size) {
         Page<DiscountCode> discountPage = discountCodeRepository.findAllByActiveIsTrue(
                 PageRequest.of(page, size));
-
         List<DiscountResponse> discountResponses = discountPage.getContent().stream()
                 .map(this::mapToDiscountResponse)
                 .toList();
-
         return new PageResponse<>(discountResponses, discountPage.getTotalElements());
     }
 
@@ -90,7 +87,6 @@ public class DiscountCodeServiceImpl implements DiscountCodeService {
     public DiscountResponse updateDiscount(Long id, DiscountRequest request) {
         DiscountCode discountCode = discountCodeRepository.findByIdAndActiveIsTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Discount", "id", id));
-
         if (request.code() != null && !request.code().isBlank() &&
                 !discountCode.getCode().equals(request.code())) {
             if (discountCodeRepository.findByCodeAndActiveIsTrue(request.code()).isPresent()) {
@@ -98,12 +94,10 @@ public class DiscountCodeServiceImpl implements DiscountCodeService {
             }
             discountCode.setCode(request.code());
         }
-
         discountCode.setType(request.type());
         discountCode.setValue(request.value());
         discountCode.setMaxAmount(request.maxAmount());
         discountCode.setExpiresAt(request.expiresAt());
-
         DiscountCode updatedDiscount = discountCodeRepository.save(discountCode);
         return mapToDiscountResponse(updatedDiscount);
     }
@@ -128,4 +122,5 @@ public class DiscountCodeServiceImpl implements DiscountCodeService {
                 discountCode.getExpiresAt()
         );
     }
+
 }

@@ -5,15 +5,15 @@ import com.example.tacoshop.entity.PaymentTransaction;
 import com.example.tacoshop.entity.User;
 import com.example.tacoshop.entity.type.OrderStatus;
 import com.example.tacoshop.entity.type.PaymentMethod;
+import com.example.tacoshop.security.AppUserDetails;
 import com.example.tacoshop.service.CreditService;
 import com.example.tacoshop.service.OrderService;
 import com.example.tacoshop.service.PaymentService;
+import com.example.tacoshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import com.example.tacoshop.security.AppUserDetails;
-import com.example.tacoshop.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -53,12 +53,10 @@ public class PaymentController {
         }
         BigDecimal amount = order.getTotalAmount().subtract(order.getDiscountAmount());
         if (method == PaymentMethod.CREDIT) {
-            BigDecimal availableCredit = creditService.getAvailableCredit(user); // assume injected
+            BigDecimal availableCredit = creditService.getAvailableCredit(user);
             if (availableCredit.compareTo(amount) < 0) {
                 BigDecimal remaining = amount.subtract(availableCredit);
-                // Debit available credit
                 paymentService.initiateOrderPayment(user, order, method, availableCredit);
-                // Return gateway URL for remaining
                 String gatewayUrl = "gateway/pay?amount=" + remaining + "&orderId=" + orderId;
                 return ResponseEntity.ok(Map.of("message", "Insufficient credit, pay remaining via bank", "remaining", remaining, "gatewayUrl", gatewayUrl));
             }

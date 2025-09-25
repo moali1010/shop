@@ -1,5 +1,6 @@
 package com.example.tacoshop.exception;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import jakarta.validation.ConstraintViolationException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -106,6 +106,7 @@ public class GlobalExceptionHandler {
         private String message;
         private Map<String, String> details;
         private LocalDateTime timestamp;
+
     }
 
 }

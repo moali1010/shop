@@ -22,10 +22,9 @@ public class Product extends BaseModel<Long> {
 
     @Column(nullable = false)
     private String name;
-
     @Column(nullable = false)
     private BigDecimal price;
-
     @Column(nullable = false)
     private Integer stock;
+
 }

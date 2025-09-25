@@ -11,4 +11,5 @@ public interface PaymentProcessor {
     void processRefund(User user, BigDecimal amount, String description);
 
     boolean canProcess(String paymentMethod);
+
 }

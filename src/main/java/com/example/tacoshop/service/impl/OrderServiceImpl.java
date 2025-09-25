@@ -202,7 +202,6 @@ public class OrderServiceImpl implements OrderService {
         if (order.getStatus() != OrderStatus.PENDING_PAYMENT) {
             throw new BusinessException("INVALID_ORDER_STATE", "Can only update pending orders");
         }
-
         orderItemRepository.deleteAll(order.getItems());
         List<OrderItem> newItems = createAndValidateOrderItems(request, order);
         order.setItems(newItems);

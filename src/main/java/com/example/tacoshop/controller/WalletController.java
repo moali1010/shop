@@ -2,12 +2,12 @@ package com.example.tacoshop.controller;
 
 import com.example.tacoshop.entity.User;
 import com.example.tacoshop.entity.type.PaymentMethod;
+import com.example.tacoshop.security.AppUserDetails;
 import com.example.tacoshop.service.PaymentService;
+import com.example.tacoshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import com.example.tacoshop.security.AppUserDetails;
-import com.example.tacoshop.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

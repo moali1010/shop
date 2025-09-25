@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService {
     public UserResponse updateUser(Long id, UserUpdateRequest request) {
         User user = userRepository.findByIdAndActiveIsTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
-
         if (request.username() != null && !request.username().isBlank() &&
                 !user.getUsername().equals(request.username())) {
             if (userRepository.findByUsername(request.username()).isPresent()) {
@@ -92,7 +91,6 @@ public class UserServiceImpl implements UserService {
             }
             user.setUsername(request.username());
         }
-
         User updatedUser = userRepository.save(user);
         return UserMapper.toUserResponse(updatedUser);
     }
@@ -125,7 +123,6 @@ public class UserServiceImpl implements UserService {
         List<UserResponse> userResponses = userPage.getContent().stream()
                 .map(UserMapper::toUserResponse)
                 .toList();
-
         return new PageResponse<>(userResponses, userPage.getTotalElements());
     }
 

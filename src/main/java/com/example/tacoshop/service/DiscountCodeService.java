@@ -16,4 +16,5 @@ public interface DiscountCodeService {
     void deactivateDiscount(Long id);
 
     PageResponse<DiscountResponse> findAllDiscounts(Integer page, Integer size);
+
 }

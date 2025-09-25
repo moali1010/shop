@@ -13,4 +13,5 @@ public interface BaseRepository<T, ID> extends JpaRepository<T, ID> {
     Optional<T> findByIdAndActiveIsTrue(ID id);
 
     Page<T> findAllByActiveIsTrue(Pageable pageable);
+
 }

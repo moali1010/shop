@@ -6,4 +6,5 @@ import com.example.tacoshop.entity.OrderEntity;
 public interface DiscountStrategy {
 
     long applyDiscount(OrderEntity order, DiscountCode code);
+
 }

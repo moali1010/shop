@@ -23,4 +23,5 @@ public interface ProductService {
     CustomerProductResponse findById(Long id);
 
     List<Product> findAllByIdIn(List<Long> ids);
+
 }

@@ -9,7 +9,6 @@ import com.example.tacoshop.entity.type.PaymentPurpose;
 import com.example.tacoshop.entity.type.PaymentStatus;
 import com.example.tacoshop.exception.BusinessException;
 import com.example.tacoshop.exception.InsufficientFundsException;
-import com.example.tacoshop.exception.ResourceNotFoundException;
 import com.example.tacoshop.repository.PaymentRepository;
 import com.example.tacoshop.service.CreditService;
 import com.example.tacoshop.service.PaymentService;
@@ -54,10 +53,9 @@ public class PaymentServiceImpl implements PaymentService {
             if (availableCredit.compareTo(remainingAmount) < 0) {
                 creditService.debitCredit(user, availableCredit);
                 remainingAmount = remainingAmount.subtract(availableCredit);
-                // Pay remaining with bank
                 PaymentProcessor bankProcessor = paymentProcessorFactory.getProcessor(PaymentMethod.ZARINPAL.name());
                 bankProcessor.processPayment(user, remainingAmount, "Remaining payment for Order#" + order.getId());
-                tx.setMethod(PaymentMethod.ZARINPAL); // Update method for log
+                tx.setMethod(PaymentMethod.ZARINPAL);
             } else {
                 creditService.debitCredit(user, remainingAmount);
                 remainingAmount = BigDecimal.ZERO;
@@ -86,23 +84,6 @@ public class PaymentServiceImpl implements PaymentService {
         tx.setStatus(PaymentStatus.SUCCESS);
         logger.info("Payment successful for order {} with method {}", order.getId(), method);
         return paymentRepository.save(tx);
-    }
-
-    @Override
-    @Transactional
-    public void confirmOrderPayment(Long transactionId, boolean success) {
-        PaymentTransaction tx = paymentRepository.findById(transactionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction", "id", transactionId));
-        if (tx.getStatus() != PaymentStatus.PENDING) {
-            return;
-        }
-        if (success) {
-            tx.setStatus(PaymentStatus.SUCCESS);
-        } else {
-            tx.setStatus(PaymentStatus.FAILED);
-            refundPayment(tx, "Payment confirmation failed");
-        }
-        paymentRepository.save(tx);
     }
 
     @Override
@@ -182,5 +163,4 @@ public class PaymentServiceImpl implements PaymentService {
                 .build();
     }
 
-    // ... rest of the code for refund etc.
 }

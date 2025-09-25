@@ -22,7 +22,6 @@ public interface UserService {
 
     void deactivateUser(Long id);
 
-    PageResponse<UserResponse> findAllUsers(Integer page, Integer size);
-
     PageResponse<UserResponse> findAllCustomers(Integer page, Integer size);
+
 }

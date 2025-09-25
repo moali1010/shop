@@ -16,4 +16,5 @@ public interface CreditService {
     BigDecimal getAvailableCredit(User user);
 
     void setCreditLimit(User user, BigDecimal newLimit);
+
 }

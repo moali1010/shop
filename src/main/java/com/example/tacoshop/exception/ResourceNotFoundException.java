@@ -6,8 +6,4 @@ public class ResourceNotFoundException extends BusinessException {
         super("RESOURCE_NOT_FOUND", String.format("%s not found with %s: %s", resource, field, value));
     }
 
-    public ResourceNotFoundException(String message) {
-        super("RESOURCE_NOT_FOUND", message);
-    }
-
 }

@@ -65,6 +65,5 @@ public class AppUserDetails implements UserDetails {
     public boolean isEnabled() {
         return active;
     }
+
 }
-
-

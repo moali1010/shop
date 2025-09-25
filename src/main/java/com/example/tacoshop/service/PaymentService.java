@@ -11,8 +11,6 @@ public interface PaymentService {
 
     PaymentTransaction initiateOrderPayment(User user, OrderEntity order, PaymentMethod method, BigDecimal amount);
 
-    void confirmOrderPayment(Long transactionId, boolean success);
-
     void refundPayment(PaymentTransaction transaction, String reason);
 
     void refundPaymentsForOrder(OrderEntity order, String reason);
@@ -22,4 +20,5 @@ public interface PaymentService {
     void initiateWalletCharge(User user, BigDecimal amount, PaymentMethod method);
 
     void repayCredit(User user, BigDecimal amount, PaymentMethod method);
+
 }

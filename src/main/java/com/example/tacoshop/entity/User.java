@@ -19,10 +19,8 @@ public class User extends BaseModel<Long> {
 
     @Column(unique = true, nullable = false)
     private String username;
-
     @Column(nullable = false)
     private String password;
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;

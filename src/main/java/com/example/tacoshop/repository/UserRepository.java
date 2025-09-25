@@ -15,4 +15,5 @@ public interface UserRepository extends BaseRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
     Page<User> findAllByRoleAndActiveIsTrue(UserRole userRole, Pageable pageable);
+
 }

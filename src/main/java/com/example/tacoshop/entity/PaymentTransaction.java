@@ -27,22 +27,16 @@ public class PaymentTransaction extends BaseModel<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
-
     private BigDecimal amount;
-
     @Enumerated(EnumType.STRING)
     private PaymentPurpose purpose;
-
     @Enumerated(EnumType.STRING)
     private PaymentMethod method;
-
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
-
     @Column(name = "provider_ref", nullable = false, unique = true)
     private String providerRef;
 
