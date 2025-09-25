@@ -22,7 +22,7 @@ public class OrderEntity extends BaseModel<Long> {
     @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
     @Column(nullable = false)
