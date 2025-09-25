@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.example.tacoshop.security.AppUserDetails;
+import com.example.tacoshop.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -25,11 +27,13 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final OrderService orderService;
     private final CreditService creditService;
+    private final UserService userService;
 
     @PostMapping("/order/{orderId}")
     public ResponseEntity<?> payOrder(@PathVariable Long orderId,
                                       @RequestParam PaymentMethod method,
-                                      @AuthenticationPrincipal User user) {
+                                      @AuthenticationPrincipal AppUserDetails principal) {
+        User user = userService.findByUsername(principal.getUsername());
         OrderEntity order = orderService.findOrderById(orderId);
         if (!order.getCustomer().getId().equals(user.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -65,13 +69,15 @@ public class PaymentController {
     }
 
     @PostMapping("/wallet/charge")
-    public ResponseEntity<Void> chargeWallet(@AuthenticationPrincipal User user, @RequestParam BigDecimal amount, @RequestParam PaymentMethod method) {
+    public ResponseEntity<Void> chargeWallet(@AuthenticationPrincipal AppUserDetails principal, @RequestParam BigDecimal amount, @RequestParam PaymentMethod method) {
+        User user = userService.findByUsername(principal.getUsername());
         paymentService.initiateWalletCharge(user, amount, method);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/credit/repay")
-    public ResponseEntity<Void> repayCredit(@AuthenticationPrincipal User user, @RequestParam BigDecimal amount, @RequestParam PaymentMethod method) {
+    public ResponseEntity<Void> repayCredit(@AuthenticationPrincipal AppUserDetails principal, @RequestParam BigDecimal amount, @RequestParam PaymentMethod method) {
+        User user = userService.findByUsername(principal.getUsername());
         paymentService.repayCredit(user, amount, method);
         return ResponseEntity.ok().build();
     }
