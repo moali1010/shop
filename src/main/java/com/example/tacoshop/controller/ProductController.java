@@ -15,7 +15,9 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<PageResponse<CustomerProductResponse>> findAllProducts(@RequestParam Integer page, @RequestParam Integer size) {
+    public ResponseEntity<PageResponse<CustomerProductResponse>> findAllProducts(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "20") Integer size) {
         return ResponseEntity.ok(productService.findAll(page, size));
     }
 

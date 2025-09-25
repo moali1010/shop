@@ -35,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PageResponse<AdminProductResponse> findAllWithDeactivate(Integer page, Integer size) {
         Page<AdminProductResponse> productResponses = productRepository.findAll(PageRequest.of(page, size))
                 .map(ProductMapper::toAdminProductResponse);
@@ -44,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PageResponse<CustomerProductResponse> findAll(Integer page, Integer size) {
         Page<CustomerProductResponse> productResponses = productRepository.findAllByActiveIsTrue(PageRequest.of(page, size))
                 .map(ProductMapper::toCustomerProductResponse);
@@ -75,6 +77,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CustomerProductResponse findById(Long id) {
         Product product = productRepository.findByIdAndActiveIsTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
@@ -82,6 +85,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Product> findAllByIdIn(List<Long> ids) {
         return productRepository.findAllByIdInAndActiveIsTrue(ids);
     }
