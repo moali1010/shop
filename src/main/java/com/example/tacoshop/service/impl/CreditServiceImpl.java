@@ -71,4 +71,20 @@ public class CreditServiceImpl implements CreditService {
         return credit.getLimit().subtract(credit.getUsed());
     }
 
+    @Override
+    @Transactional
+    public void setCreditLimit(User user, BigDecimal newLimit) {
+        if (newLimit == null || newLimit.compareTo(BigDecimal.ZERO) < 0) {
+            throw new BusinessException("INVALID_LIMIT", "Credit limit must be non-negative");
+        }
+        Credit credit = creditRepository.findByUserId(user.getId()).orElseThrow(() ->
+                new ResourceNotFoundException("CREDIT", "user-id", user.getId())
+        );
+        credit.setLimit(newLimit);
+        if (credit.getUsed().compareTo(newLimit) > 0) {
+            credit.setUsed(newLimit);
+        }
+        creditRepository.save(credit);
+    }
+
 }
