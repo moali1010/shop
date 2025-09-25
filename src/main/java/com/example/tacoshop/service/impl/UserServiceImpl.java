@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public AuthResponse loginUser(UserLoginRequest request) {
         User user = userRepository.findByUsername(request.username()).orElseThrow(() ->
                 new BusinessException("USER_NOT_FOUND", "User not found"));
-        if (!user.isEnabled()) {
+        if (!Boolean.TRUE.equals(user.getActive())) {
             throw new BusinessException("USER_NOT_ACTIVE", "user deactivated");
         }
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
@@ -71,6 +71,12 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() ->
                 new BusinessException("USER_NOT_FOUND", "User not found"));
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findByIdAndActiveIsTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     }
 
     @Override
